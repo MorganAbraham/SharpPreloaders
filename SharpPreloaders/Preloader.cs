@@ -17,8 +17,10 @@ namespace SharpPreloaders
 
         private System.Timers.Timer timer;
 
-        private Image[] frames;
+        private List<Image> frames;
+        private int currentImage = 0;
 
+        private Image originalBackgroundImage;
         public enum AnimationSpeed
         {
             VerySlow,
@@ -44,23 +46,25 @@ namespace SharpPreloaders
             switch (speed)
             {
                 case AnimationSpeed.VerySlow:
-                    timerInterval = 3000;
-                    break;
-                case AnimationSpeed.Slow:
-                    timerInterval = 1500;
-                    break;
-                case AnimationSpeed.Fast:
                     timerInterval = 500;
                     break;
-                case AnimationSpeed.VeryFast:
+                case AnimationSpeed.Slow:
                     timerInterval = 250;
+                    break;
+                case AnimationSpeed.Fast:
+                    timerInterval = 50;
+                    break;
+                case AnimationSpeed.VeryFast:
+                    timerInterval = 25;
                     break;
                 case AnimationSpeed.Medium:
                 default:
-                    timerInterval = 1000;
+                    timerInterval = 100;
                     break;
             }
 
+            CreateFrames();
+            this.originalBackgroundImage = form.BackgroundImage;
             timer = new System.Timers.Timer(timerInterval);
             timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
         }
@@ -78,17 +82,25 @@ namespace SharpPreloaders
 
         private void ClearAnimation()
         {
-            throw new NotImplementedException();
+            form.Invoke(new MethodInvoker(delegate { form.BackgroundImage = originalBackgroundImage; }));
         }
 
         public void PauseAnimation()
         {
-            timer.Stop();
+            if(timer.Enabled)
+            {
+                timer.Stop();
+            }
+            else
+            {
+                timer.Start();
+            }
         }
 
         private void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            throw new NotImplementedException();
+            form.Invoke(new MethodInvoker(delegate { form.BackgroundImage = frames[currentImage]; }));
+            currentImage = (currentImage + 1) % frames.Count;
         }
 
         private void CreateFrames()
@@ -106,7 +118,7 @@ namespace SharpPreloaders
             }
 
             Size imageSize = form.Size;
-            frames = frameBuilder == null ? new Image[0] : frameBuilder.GetImages(imageSize);
+            frames = frameBuilder == null ? new List<Image>() : frameBuilder.GetImages(imageSize);
         }
     }
 }
