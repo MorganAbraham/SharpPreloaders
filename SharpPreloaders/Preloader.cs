@@ -6,12 +6,13 @@ using System.Timers;
 using System.Windows.Forms;
 using System.Drawing;
 using SharpPreloaders.FrameBuilders;
+using System.Reflection;
 
 namespace SharpPreloaders
 {
     public class Preloader
     {
-        private Form form;
+        private Control control;
         private AnimationStyle style;
         private AnimationSpeed speed;
 
@@ -36,9 +37,17 @@ namespace SharpPreloaders
             BallLineToBox
         }
 
-        public Preloader(Form form, AnimationStyle style, AnimationSpeed speed)
+        public Preloader(Control control, AnimationStyle style, AnimationSpeed speed)
         {
-            this.form = form;
+            this.control = control;
+            if(control == null)
+            {
+                throw new NullReferenceException("control reference not set to an instance of Control");
+            }
+            //Make sure control is double buffered
+            typeof(Control).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance |
+                  BindingFlags.NonPublic, null, control, new object[] { true });
+            control.BackgroundImageLayout = ImageLayout.Stretch;
             this.style = style;
             this.speed = speed;
 
@@ -65,7 +74,7 @@ namespace SharpPreloaders
             }
 
             CreateFrames();
-            this.originalBackgroundImage = form.BackgroundImage;
+            this.originalBackgroundImage = control.BackgroundImage;
             timer = new System.Timers.Timer(timerInterval);
             timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
         }
@@ -83,7 +92,7 @@ namespace SharpPreloaders
 
         private void ClearAnimation()
         {
-            form.Invoke(new MethodInvoker(delegate { form.BackgroundImage = originalBackgroundImage; }));
+            control.Invoke(new MethodInvoker(delegate { control.BackgroundImage = originalBackgroundImage; }));
         }
 
         public void PauseAnimation()
@@ -100,7 +109,7 @@ namespace SharpPreloaders
 
         private void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            form.Invoke(new MethodInvoker(delegate { form.BackgroundImage = frames[currentImage]; }));
+            control.Invoke(new MethodInvoker(delegate { control.BackgroundImage = frames[currentImage]; }));
             currentImage = (currentImage + 1) % frames.Count;
         }
 
@@ -121,7 +130,7 @@ namespace SharpPreloaders
                     break;
             }
 
-            Size imageSize = form.Size;
+            Size imageSize = control.Size;
             frames = frameBuilder == null ? new List<Image>() : frameBuilder.GetImages(imageSize);
         }
     }
