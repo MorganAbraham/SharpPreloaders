@@ -32,7 +32,8 @@ namespace SharpPreloaders
 
         public enum AnimationStyle
         {
-            SimpleBallBounce
+            SimpleBallBounce,
+            BallLineToBox
         }
 
         public Preloader(Form form, AnimationStyle style, AnimationSpeed speed)
@@ -111,6 +112,9 @@ namespace SharpPreloaders
             {
                 case AnimationStyle.SimpleBallBounce:
                     frameBuilder = new SimpleBallBounceFrameBuilder();
+                    break;
+                case AnimationStyle.BallLineToBox:
+                    frameBuilder = new BallLineToBoxFrameBuilder();
                     break;
                 default:
                     frameBuilder = null;
