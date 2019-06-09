@@ -6,7 +6,9 @@ namespace SharpPreloaders.FrameBuilders
     {
         protected List<Image> images;
         protected Size imageSize;
+        protected Color backColor;
+        protected ImageBoundry boundry;
 
-        public abstract List<Image> GetImages(Size imageSize);
+        public abstract List<Image> GetImages(Size imageSize, Color backColor, ImageBoundry boundry);
     }
 }

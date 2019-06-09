@@ -43,7 +43,9 @@
   <ItemGroup>
     <Compile Include="FrameBuilders\BallLineToBoxFrameBuilder.cs" />
     <Compile Include="FrameBuilders\FrameBuilder.cs" />
+    <Compile Include="FrameBuilders\ShapeShifterFrameBuilder.cs" />
     <Compile Include="FrameBuilders\SimpleBallBounceFrameBuilder.cs" />
+    <Compile Include="ImageBoundry.cs" />
     <Compile Include="Preloader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

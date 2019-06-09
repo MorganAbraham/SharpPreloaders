@@ -12,19 +12,23 @@ namespace SharpPreloaders.FrameBuilders
     /// </summary>
     class SimpleBallBounceFrameBuilder : FrameBuilder
     {
-        public override List<Image> GetImages(Size imageSize)
+        public override List<Image> GetImages(Size imageSize, Color backColor, ImageBoundry boundry)
         {
             this.imageSize = imageSize;
+            this.backColor = backColor;
+            this.boundry = boundry;
+
             /*
-             * The ball should start at center screen. Then it should go up for 10 frames, then back down for 10 frames
+             * The ball should start at center screen. Then it should go up for 10 frames, 
+             * then back down for 10 frames
              * The ball should flatten and get more oblong when it hits the ground
              */
-
-            float circleSize = imageSize.Width * .05f;
             
-            float startPointY = 0;
-            float x = (imageSize.Width / 2f) - (circleSize / 2f);
-            float midScreenY = (imageSize.Height / 2f) - (circleSize / 2f);
+            float circleSize = boundry.ImageSize.Width * .05f;
+            
+            float startPointY = boundry.Center.Y - (boundry.ImageSize.Height / 2);
+            float x = (boundry.Center.X) - (circleSize / 2f);
+            float midScreenY = (boundry.Center.Y) - (circleSize / 2f);
             float increment = ((midScreenY - startPointY) - (circleSize * .5f)) / 10;
             startPointY += increment;
 
@@ -89,12 +93,17 @@ namespace SharpPreloaders.FrameBuilders
             
             using(Graphics graphics = Graphics.FromImage(bitmap))
             {
-                using(Pen pen = new Pen(Color.Black, .1f))
+                using (SolidBrush brush = new SolidBrush(backColor))
                 {
-                    float midScreenX = bitmap.Width / 2;
-                    float lineY = bitmap.Height * .5F;
-                    float startingX = bitmap.Width * .25f;
-                    float lineEnd = bitmap.Width - (startingX);
+                    graphics.FillRectangle(brush, 0, 0, bitmap.Width, bitmap.Height);
+                }
+                using (Pen pen = new Pen(Color.Black, .1f))
+                {
+                    float lineY = boundry.Center.Y;
+                    float startingX = (boundry.Center.X - (boundry.ImageSize.Width / 2)) + 
+                        (boundry.ImageSize.Width * .25F);
+                    float lineEnd = (boundry.Center.X - (boundry.ImageSize.Width / 2)) +
+                        (boundry.ImageSize.Width * .75F);
                     graphics.DrawLine(pen, startingX, lineY, lineEnd, lineY);
                 }
                 using(Pen pen = new Pen(Color.Blue, .1f))

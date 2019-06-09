@@ -11,25 +11,27 @@ namespace SharpPreloaders.FrameBuilders
     /// </summary>
     class BallLineToBoxFrameBuilder : FrameBuilder 
     {
-        public override List<Image> GetImages(Size imageSize)
+        public override List<Image> GetImages(Size imageSize, Color backColor, ImageBoundry boundry)
         {
             this.imageSize = imageSize;
+            this.backColor = backColor;
             images = new List<Image>();
             /*
              * The ball should start at center screen. Then it should go up for 10 frames, then back down for 10 frames
              * The ball should flatten and get more oblong when it hits the ground
              */
 
-            float circleSize = imageSize.Width * .05f;
-            float midScreenX = imageSize.Width / 2;
-            float lineY = imageSize.Height * .5F;
+            float circleSize = boundry.ImageSize.Width * .05f;
+            float midScreenX = boundry.Center.X;
+            float lineY = boundry.Center.Y;
             int ballCount = 4;
-            float lineSize = imageSize.Width * .8f;
+            float lineSize = boundry.ImageSize.Width * .8f;
 
             int changeFrameCount = 5;
             
 
-            float startingX = imageSize.Width - lineSize;
+            float startingX = (boundry.Center.X - (boundry.ImageSize.Width / 2)) +
+                        (boundry.ImageSize.Width - lineSize);
             startingX -= (circleSize / 2);
             float distance = lineSize / ballCount;
 
@@ -204,7 +206,7 @@ namespace SharpPreloaders.FrameBuilders
             Bitmap bitmap = new Bitmap(imageSize.Width, imageSize.Height);
             using(Graphics graphics = Graphics.FromImage(bitmap))
             {
-                using(SolidBrush brush = new SolidBrush(Color.FromArgb(47, 56, 71)))
+                using(SolidBrush brush = new SolidBrush(backColor))
                 {
                     graphics.FillRectangle(brush, 0, 0, bitmap.Width, bitmap.Height);
                 }

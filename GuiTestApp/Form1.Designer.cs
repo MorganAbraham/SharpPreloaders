@@ -33,9 +33,11 @@
             this.btnPause = new System.Windows.Forms.Button();
             this.comboStyle = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.comboSpeed = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.comboPosition = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -76,12 +78,14 @@
             this.comboStyle.Name = "comboStyle";
             this.comboStyle.Size = new System.Drawing.Size(159, 21);
             this.comboStyle.TabIndex = 3;
-            this.comboStyle.SelectedIndexChanged += new System.EventHandler(this.comboStyle_SelectedIndexChanged);
+            this.comboStyle.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.comboPosition);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.comboSpeed);
             this.panel1.Controls.Add(this.label1);
@@ -93,15 +97,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(189, 396);
             this.panel1.TabIndex = 4;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 11);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Animation Style";
             // 
             // label2
             // 
@@ -119,7 +114,34 @@
             this.comboSpeed.Name = "comboSpeed";
             this.comboSpeed.Size = new System.Drawing.Size(159, 21);
             this.comboSpeed.TabIndex = 5;
-            this.comboSpeed.SelectedIndexChanged += new System.EventHandler(this.comboSpeed_SelectedIndexChanged);
+            this.comboSpeed.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(14, 11);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(79, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Animation Style";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(14, 118);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(44, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Position";
+            // 
+            // comboPosition
+            // 
+            this.comboPosition.FormattingEnabled = true;
+            this.comboPosition.Location = new System.Drawing.Point(17, 134);
+            this.comboPosition.Name = "comboPosition";
+            this.comboPosition.Size = new System.Drawing.Size(159, 21);
+            this.comboPosition.TabIndex = 7;
+            this.comboPosition.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
             // 
             // Form1
             // 
@@ -147,6 +169,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboSpeed;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox comboPosition;
     }
 }
 

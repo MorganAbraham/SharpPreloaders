@@ -20,31 +20,28 @@ namespace GuiTestApp
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Dictionary<string, Preloader.AnimationSpeed> speeds = new Dictionary<string, Preloader.AnimationSpeed>();
-            foreach(Preloader.AnimationSpeed animationSpeed in Enum.GetValues(typeof(Preloader.AnimationSpeed)))
-            {
-                speeds.Add(animationSpeed.ToString(), animationSpeed);
-            }
-
-            comboSpeed.DataSource = new BindingSource(speeds, null);
-            comboSpeed.DisplayMember = "Key";
-            comboSpeed.ValueMember = "Value";
-            comboSpeed.SelectedIndex = -1;
-
-            Dictionary<string, Preloader.AnimationStyle> styles = new Dictionary<string, Preloader.AnimationStyle>();
-            foreach (Preloader.AnimationStyle animationStyle in Enum.GetValues(typeof(Preloader.AnimationStyle)))
-            {
-                styles.Add(animationStyle.ToString(), animationStyle);
-            }
-
-            comboStyle.DataSource = new BindingSource(styles, null);
-            comboStyle.DisplayMember = "Key";
-            comboStyle.ValueMember = "Value";
-            comboStyle.SelectedIndex = -1;
+            LoadComboBox(comboStyle, typeof(Preloader.AnimationStyle));
+            LoadComboBox(comboSpeed, typeof(Preloader.AnimationSpeed));
+            LoadComboBox(comboPosition, typeof(Preloader.Position));
+            
             
         }
 
+        private void LoadComboBox(ComboBox box, Type type)
+        {
+            Dictionary<string, object> values = 
+                new Dictionary<string, object>();
 
+            foreach (var value in Enum.GetValues(type))
+            {
+                values.Add(value.ToString(), value);
+            }
+
+            box.DataSource = new BindingSource(values, null);
+            box.DisplayMember = "Key";
+            box.ValueMember = "Value";
+            box.SelectedIndex = -1;
+        }
         private void btnStart_Click(object sender, EventArgs e)
         {
             preloader.StartAnimation();
@@ -60,28 +57,19 @@ namespace GuiTestApp
             preloader.PauseAnimation();
         }
 
-        private void comboStyle_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (preloader != null)
             {
                 preloader.StopAnimation();
             }
-            if (this.comboSpeed.SelectedIndex != -1 && this.comboStyle.SelectedIndex != -1)
+            if (this.comboSpeed.SelectedIndex != -1 && 
+                this.comboStyle.SelectedIndex != -1 && this.comboPosition.SelectedIndex != -1)
             {
-                preloader = new Preloader(this, (Preloader.AnimationStyle)this.comboStyle.SelectedValue, (Preloader.AnimationSpeed)this.comboSpeed.SelectedValue);
-                preloader.StartAnimation();
-            }
-        }
-
-        private void comboSpeed_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(preloader != null)
-            {
-                preloader.StopAnimation();
-            }
-            if (this.comboSpeed.SelectedIndex != -1 && this.comboStyle.SelectedIndex != -1)
-            {
-                preloader = new Preloader(this, (Preloader.AnimationStyle)this.comboStyle.SelectedValue, (Preloader.AnimationSpeed)this.comboSpeed.SelectedValue);
+                preloader = new Preloader(this, 
+                    (Preloader.AnimationStyle)this.comboStyle.SelectedValue, 
+                    (Preloader.AnimationSpeed)this.comboSpeed.SelectedValue,
+                    (Preloader.Position)this.comboPosition.SelectedValue);
                 preloader.StartAnimation();
             }
         }
