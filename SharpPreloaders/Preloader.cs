@@ -50,7 +50,8 @@ namespace SharpPreloaders
         {
             SimpleBallBounce,
             BallLineToBox,
-            ShapeShifter
+            ShapeShifter,
+            SpinningGears
         }
 
         public Preloader(Control control, AnimationStyle style, AnimationSpeed speed, 
@@ -146,6 +147,9 @@ namespace SharpPreloaders
                     break;
                 case AnimationStyle.ShapeShifter:
                     frameBuilder = new ShapeShifterFrameBuilder();
+                    break;
+                case AnimationStyle.SpinningGears:
+                    frameBuilder = new SpinningGearsFrameBuilder();
                     break;
                 default:
                     frameBuilder = null;
